@@ -1,22 +1,12 @@
-import React, { Suspense } from 'react';
-import { Provider } from 'react-redux';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { store } from './store/store';
 import './index.scss';
-import './internationalization/i18n';
-import Fallback from './features/Fallback/Fallback';
 
 ReactDOM.render(
-  <Suspense fallback={Fallback}>
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>
-  </Suspense>,
+  <App />,
 
   document.getElementById('root'),
 );
