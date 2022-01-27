@@ -1,0 +1,23 @@
+{
+  "name": "jsg_websocket",
+  "version": "1.0.0",
+  "description": "A node websocket implementation, primarily for live chats",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "websocket",
+    "chat"
+  ],
+  "author": "MLukicJSG",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.17.2",
+    "express-ws": "^5.0.2",
+    "nodemon": "^2.0.15",
+    "websocket": "^1.0.34"
+  }
+}
