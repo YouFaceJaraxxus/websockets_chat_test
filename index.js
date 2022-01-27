@@ -47,10 +47,9 @@ const sendRandomMessage = () => {
         }
     });
 }
-if(process.env.NODE_ENV==='production'){
-    const path = require('path');
-    app.use('*', defaultRoute)
-}
+
+const defaultRoute = require('./routes/default');
+app.use('*', defaultRoute)
 
 setInterval(sendRandomMessage, 30000);
 const port = process.env.PORT || 3001;
