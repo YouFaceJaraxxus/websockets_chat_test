@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
-const client = new W3CWebSocket('ws://websocketsz.herokuapp.com');
+const client = new W3CWebSocket('ws://localhost:3001');
 const SOCKET_READY_STATE = 1;
 const App = () => {
   const [messages, setMessages] = useState([]);
