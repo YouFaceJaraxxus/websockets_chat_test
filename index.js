@@ -33,6 +33,22 @@ wss.on('connection', (ws, req) => {
     });
 });
 
+const sendRandomMessage = () => {
+    wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+            
+            const response = {
+                id: messageId++,
+                user: 'SERVER',
+                text: 'A GREETING MESSAGE FOR EVERYONE EVERY 10 SEC',
+            }
+            client.send(JSON.stringify(response));
+        }
+    });
+}
+
+setInterval(sendRandomMessage, 10000);
+
 //start our server
 server.listen(process.env.PORT || 8000, () => {
     console.log(`Server started on port ${process.env.PORT || 8000}`);
