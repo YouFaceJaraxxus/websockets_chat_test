@@ -1,0 +1,52 @@
+stages:
+  - build
+  - deploy
+
+
+cache: 
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+before_script:
+  - export CI_ENVIRONMENT_NAME=$(bash ./deploy/set-env.sh)
+
+build:
+  image: node:14.18.1
+  stage: build
+  variables:
+    CI: "false"
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /(develop|staging|main|gitlab-ci)/'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH !~ /(develop|staging|main|gitlab-ci)/'
+      when: never
+  cache: 
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+    policy: pull
+  script:
+    - npm set registry https://registry.npmjs.org/
+    - npm i
+    - bash deploy/build.sh
+  artifacts:
+    paths:
+      - build
+    expire_in: 7 days
+
+upload dev artifact to s3:
+  image:
+    name: amazon/aws-cli:2.4.0
+    entrypoint: [""]
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /(develop|staging|main|gitlab-ci)/'
+      when: always
+    - if: '$CI_COMMIT_BRANCH !~ /(develop|staging|main|gitlab-ci)/'
+      when: never
+  needs:
+    - build
+  stage: deploy
+  script:
+    - yum install -y jq
+    - bash deploy/deploy.sh

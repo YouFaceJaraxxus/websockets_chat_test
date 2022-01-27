@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(cookieParser());
+app.use(express.static('client/build'))
 
 //initialize a simple http server
 const server = http.createServer(app);
@@ -40,16 +41,20 @@ const sendRandomMessage = () => {
             const response = {
                 id: messageId++,
                 user: 'SERVER',
-                text: 'A GREETING MESSAGE FOR EVERYONE EVERY 10 SEC',
+                text: 'A GREETING MESSAGE FOR EVERYONE EVERY 30 SEC',
             }
             client.send(JSON.stringify(response));
         }
     });
 }
+if(process.env.NODE_ENV==='production'){
+    const path = require('path');
+    app.use('*', defaultRoute)
+}
 
-setInterval(sendRandomMessage, 10000);
-
+setInterval(sendRandomMessage, 30000);
+const port = process.env.PORT || 3001;
 //start our server
-server.listen(process.env.PORT || 8000, () => {
-    console.log(`Server started on port ${process.env.PORT || 8000}`);
+server.listen(port, () => {
+    console.log(`Server started on port ${port}`);
 });
